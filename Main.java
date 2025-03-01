@@ -86,7 +86,80 @@ class MusicStar {
         }
         System.out.println("Total hours played: " + totalHoursPlayed);
     }
+    abstract class Musician {
+        private String name;
+        private int age;
+
+        public Musician(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+        public abstract void perform();
+    }
+
+    interface Instrumentalist {
+        void playInstrument();
+        void tuneInstrument();
+    }
+
+    class Instrument {
+        private String type;
+        private int numberOfStrings;
+        private int numberOfKeys;
+        private String color;
+
+        public Instrument(String type, int numberOfStrings, int numberOfKeys, String color) {
+            this.type = type;
+            this.numberOfStrings = numberOfStrings;
+            this.numberOfKeys = numberOfKeys;
+            this.color = color;
+        }
+
+        public void play() {
+            System.out.println("Playing the " + type);
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public int getNumberOfStrings() {
+            return numberOfStrings;
+        }
+
+        public int getNumberOfKeys() {
+            return numberOfKeys;
+        }
+
+        public String getColor() {
+            return color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+    }
+
+
 }
+
 
 
 
