@@ -1,165 +1,164 @@
-import java.util.Random;
+import java.util.*;
 
-// Base class Instrument
-class Instrument {
-    private String type;
-    private String brand;
-    private String color;
+class Book implements Comparable<Book> {
+    private String title;
+    private String author;
+    private String isbn;
+    private int borrowCount;
 
-    public Instrument(String type, String brand, String color) {
-        this.type = type;
-        this.brand = brand;
-        this.color = color;
+    public Book(String title, String author, String isbn) {
+        this.title = title;
+        this.author = author;
+        this.isbn = isbn;
+        this.borrowCount = 0;
     }
 
-    public String getType() { return type; }
-    public void setType(String type) { this.type = type; }
-
-    public String getBrand() { return brand; }
-    public void setBrand(String brand) { this.brand = brand; }
-
-    public String getColor() { return color; }
-    public void setColor(String color) { this.color = color; }
-
-    public void play() {
-        System.out.println("Playing the " + type);
-    }
-}
-
-class Guitar extends Instrument {
-    private int numberOfStrings;
-
-    public Guitar(String type, String brand, String color, int numberOfStrings) {
-        super(type, brand, color);
-        this.numberOfStrings = numberOfStrings;
+    public void incrementBorrowCount() {
+        borrowCount++;
     }
 
-    public int getNumberOfStrings() { return numberOfStrings; }
-    public void setNumberOfStrings(int numberOfStrings) { this.numberOfStrings = numberOfStrings; }
+    public String getTitle() { return title; }
+    public String getAuthor() { return author; }
+    public String getIsbn() { return isbn; }
+    public int getBorrowCount() { return borrowCount; }
 
-    public void strum() {
-        System.out.println("Strumming the guitar with " + numberOfStrings + " strings.");
-    }
-}
-
-class Piano extends Instrument {
-    private int numberOfKeys;
-
-    public Piano(String type, String brand, String color, int numberOfKeys) {
-        super(type, brand, color);
-        this.numberOfKeys = numberOfKeys;
+    @Override
+    public int compareTo(Book other) {
+        return this.title.compareTo(other.title);
     }
 
-    public int getNumberOfKeys() { return numberOfKeys; }
-    public void setNumberOfKeys(int numberOfKeys) { this.numberOfKeys = numberOfKeys; }
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Book)) return false;
+        Book other = (Book) obj;
+        return this.isbn.equals(other.isbn);
+    }
 
-    public void pressKeys() {
-        System.out.println("Pressing keys on the piano with " + numberOfKeys + " keys.");
+    @Override
+    public int hashCode() {
+        return Objects.hash(isbn);
     }
 }
 
-class MusicStar {
+class Patron {
     private String name;
-    private int age;
-    private Instrument mainInstrument;
+    private String email;
+    private String phoneNumber;
+    private String patronId;
 
-    public MusicStar(String name, int age, Instrument mainInstrument) {
+    public Patron(String name, String email, String phoneNumber, String patronId) {
         this.name = name;
-        this.age = age;
-        this.mainInstrument = mainInstrument;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.patronId = patronId;
     }
 
-    public void perform(int days) {
-        Random random = new Random();
-        int totalHoursPlayed = 0;
-        System.out.println(name + " is performing with a " + mainInstrument.getColor() + " " + mainInstrument.getType() + " for " + days + " days.");
-        for (int day = 1; day <= days; day++) {
-            int hoursPlayed = random.nextInt(5) + 1;
-            totalHoursPlayed += hoursPlayed;
-            System.out.println("Day " + day + ": " + name + " played for " + hoursPlayed + " hours.");
-            if (day % 3 == 0) {
-                System.out.println("Special performance today!");
-            }
-            if (day % 5 == 0) {
-                System.out.println("Milestone reached!");
-            }
-        }
-        System.out.println("Total hours played: " + totalHoursPlayed);
-    }
-    abstract class Musician {
-        private String name;
-        private int age;
-
-        public Musician(String name, int age) {
-            this.name = name;
-            this.age = age;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public int getAge() {
-            return age;
-        }
-
-        public void setAge(int age) {
-            this.age = age;
-        }
-
-        public abstract void perform();
-    }
-
-    interface Instrumentalist {
-        void playInstrument();
-        void tuneInstrument();
-    }
-
-    class Instrument {
-        private String type;
-        private int numberOfStrings;
-        private int numberOfKeys;
-        private String color;
-
-        public Instrument(String type, int numberOfStrings, int numberOfKeys, String color) {
-            this.type = type;
-            this.numberOfStrings = numberOfStrings;
-            this.numberOfKeys = numberOfKeys;
-            this.color = color;
-        }
-
-        public void play() {
-            System.out.println("Playing the " + type);
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public int getNumberOfStrings() {
-            return numberOfStrings;
-        }
-
-        public int getNumberOfKeys() {
-            return numberOfKeys;
-        }
-
-        public String getColor() {
-            return color;
-        }
-
-        public void setColor(String color) {
-            this.color = color;
-        }
-    }
-
-
+    public String getName() { return name; }
+    public String getPatronId() { return patronId; }
 }
 
+class LibraryManagementSystem {
+    private HashSet<Book> bookCatalog = new HashSet<>();
+    private TreeSet<Book> sortedBooks = new TreeSet<>();
+    private ArrayList<Patron> patrons = new ArrayList<>();
+    private LinkedList<String> reservationQueue = new LinkedList<>();
+    private LinkedHashSet<Book> recentlyBorrowed = new LinkedHashSet<>();
 
+    public void addBook(String title, String author, String isbn) {
+        Book book = new Book(title, author, isbn);
+        if (bookCatalog.add(book)) {
+            sortedBooks.add(book);
+            System.out.println("Book added: " + title);
+        } else {
+            System.out.println("Book already exists!");
+        }
+    }
 
+    public void registerPatron(String name, String email, String phoneNumber) {
+        patrons.add(new Patron(name, email, phoneNumber, "P" + (patrons.size() + 1)));
+        System.out.println("Patron registered: " + name);
+    }
 
+    public void borrowBook(String patronId, String isbn) {
+        for (Book book : bookCatalog) {
+            if (book.getIsbn().equals(isbn)) {
+                book.incrementBorrowCount();
+                recentlyBorrowed.add(book);
+                System.out.println("Book borrowed: " + book.getTitle());
+                return;
+            }
+        }
+        System.out.println("Book not found!");
+    }
+
+    public void returnBook(String isbn) {
+        for (Book book : recentlyBorrowed) {
+            if (book.getIsbn().equals(isbn)) {
+                recentlyBorrowed.remove(book);
+                System.out.println("Book returned: " + book.getTitle());
+                return;
+            }
+        }
+        System.out.println("This book was not borrowed recently.");
+    }
+
+    public void searchBookByTitle(String title) {
+        for (Book book : sortedBooks) {
+            if (book.getTitle().equalsIgnoreCase(title)) {
+                System.out.println("Book found: " + book.getTitle() + " by " + book.getAuthor());
+                return;
+            }
+        }
+        System.out.println("Book not found.");
+    }
+
+    public void displayPopularBooks() {
+        sortedBooks.stream()
+                .sorted((b1, b2) -> Integer.compare(b2.getBorrowCount(), b1.getBorrowCount()))
+                .limit(5)
+                .forEach(book -> System.out.println(book.getTitle() + " - Borrowed " + book.getBorrowCount() + " times"));
+    }
+}
+
+class LibraryInterface {
+    private LibraryManagementSystem lms = new LibraryManagementSystem();
+    private Scanner scanner = new Scanner(System.in);
+
+    public void start() {
+        System.out.println("Welcome to the Library Management System");
+        System.out.println("Enter commands (type 'HELP' for a list of commands or 'EXIT' to quit)");
+
+        while (true) {
+            System.out.print("> ");
+            String input = scanner.nextLine().trim();
+
+            if (input.equalsIgnoreCase("EXIT")) {
+                System.out.println("Thank you for using the Library Management System. Goodbye!");
+                break;
+            } else if (input.equalsIgnoreCase("HELP")) {
+                displayHelp();
+            } else {
+                processCommand(input);
+            }
+        }
+        scanner.close();
+    }
+
+    private void displayHelp() {
+        System.out.println("Available commands:");
+        System.out.println("  ADD BOOK \"Title\" \"Author\" ISBN");
+        System.out.println("  REGISTER PATRON \"Name\" \"Email\" PhoneNumber");
+        System.out.println("  BORROW PatronID ISBN");
+        System.out.println("  RETURN BOOK ISBN");
+        System.out.println("  SEARCH TITLE \"Title\"");
+        System.out.println("  POPULAR BOOKS");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        LibraryInterface libraryInterface = new LibraryInterface();
+        libraryInterface.start();
+    }
+}
