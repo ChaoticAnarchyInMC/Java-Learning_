@@ -1,4 +1,4 @@
-package org.example;
+package org.example.com.learning.file.handling;
 
 public class LoginInfo {
     private String username;

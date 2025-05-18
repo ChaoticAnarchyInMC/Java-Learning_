@@ -1,4 +1,4 @@
-package org.example;
+package org.example.com.learning.file.handling;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
